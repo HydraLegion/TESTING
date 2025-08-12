@@ -4,7 +4,7 @@ import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import { saveDataset } from "../../../services/firestoreService";
 import { addDoc, collection } from "firebase/firestore";
-import { db, storage } from "../../../../../firebase"; // adjust path if different
+import { db, storage } from "../../../firebase"; // adjust path if different
 
 const handleFile = async (file) => {
   const reader = new FileReader();
