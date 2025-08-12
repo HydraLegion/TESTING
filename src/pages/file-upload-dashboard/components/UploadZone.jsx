@@ -1,3 +1,4 @@
+import * as XLSX from "xlsx";
 import React, { useState, useRef } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
