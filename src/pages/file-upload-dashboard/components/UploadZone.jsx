@@ -3,6 +3,33 @@ import React, { useState, useRef } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import { saveDataset } from "../../../services/firestoreService";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../../firebase"; // adjust path if different
+
+const handleFile = async (file) => {
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const data = new Uint8Array(e.target.result);
+    const workbook = XLSX.read(data, { type: "array" });
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+    const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+    // Save to Firestore
+    await addDoc(collection(db, "datasets"), {
+      name: file.name,
+      data: jsonData,
+      createdAt: new Date()
+    });
+
+    alert("Excel uploaded & saved to Firestore!");
+  };
+  reader.readAsArrayBuffer(file);
+};
+
+// When you handle file upload:
+<input type="file" accept=".xlsx,.xls" onChange={(e) => handleFile(e.target.files[0])} />
+
 
 const handleFileUpload = async (file) => {
   const processedData = await processExcelFile(file);
