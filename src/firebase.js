@@ -1,5 +1,5 @@
 // src/firebase.js
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -12,9 +12,8 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// ✅ Only initialize if there are no apps yet
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-// Firestore & Storage exports
 export const db = getFirestore(app);
 export const storage = getStorage(app);
